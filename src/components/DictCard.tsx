@@ -1,98 +1,43 @@
-import React from 'react';
+import React from "react";
+import styled from "styled-components";
 
-interface DictCardProps {
-  title: string;
-  subtitle?: string;
-  date?: string;
-  count?: number;
-  isSelected?: boolean;
-  onClick?: () => void;
-  style?: React.CSSProperties;
-}
+/* 카드 상단 오른쪽 숫자 + 화살표 컨테이너 */
+const RightWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  position: absolute;
+  right: 16px;
+  top: 28px;
+`;
 
-const DictCard: React.FC<DictCardProps> = ({
-  title,
-  subtitle,
-  date,
-  count,
-  isSelected = false,
-  onClick,
-  style,
-}) => {
-  const cardStyle: React.CSSProperties = {
-    backgroundColor: isSelected
-      ? 'rgba(92, 110, 255, 0.3)'
-      : 'rgba(255, 255, 255, 0.5)',
-    borderRadius: '15px',
-    padding: '10px',
-    cursor: onClick ? 'pointer' : 'default',
-    position: 'relative',
-    ...style,
-  };
+/* 숫자 스타일 */
+const NumberText = styled.span`
+  font-family: "SF Pro", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #6b6b6b;
+`;
 
+/* 화살표 SVG */
+const Arrow = styled.svg`
+  width: 5px;
+  height: 9px;
+`;
+
+export const CardTopRight: React.FC<{ number: string }> = ({ number }) => {
   return (
-    <div onClick={onClick} style={cardStyle}>
-      <p
-        style={{
-          fontFamily: 'SF Pro',
-          fontWeight: 510,
-          fontSize: '18px',
-          lineHeight: '36px',
-          color: '#000000',
-          textAlign: 'center',
-          letterSpacing: '-0.43px',
-        }}
-      >
-        {title}
-      </p>
-      {subtitle && (
-        <p
-          style={{
-            fontFamily: 'SF Pro',
-            fontWeight: 510,
-            fontSize: '12px',
-            lineHeight: '22px',
-            color: '#a9a9a9',
-            textAlign: 'center',
-            letterSpacing: '-0.43px',
-          }}
-        >
-          {subtitle}
-        </p>
-      )}
-      {date && (
-        <p
-          style={{
-            fontFamily: 'SF Pro',
-            fontWeight: 510,
-            fontSize: '12px',
-            lineHeight: '22px',
-            color: 'rgba(0, 0, 0, 0.5)',
-            textAlign: 'center',
-            letterSpacing: '-0.43px',
-          }}
-        >
-          {date}
-        </p>
-      )}
-      {count !== undefined && (
-        <p
-          style={{
-            fontFamily: 'SF Pro',
-            fontWeight: 510,
-            fontSize: '12px',
-            lineHeight: '22px',
-            color: '#a9a9a9',
-            textAlign: 'center',
-            letterSpacing: '-0.43px',
-          }}
-        >
-          {count}
-        </p>
-      )}
-    </div>
+    <RightWrapper>
+      <NumberText>{number}</NumberText>
+      <Arrow viewBox="0 0 5 9" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M1 1L4 4.5L1 8"
+          stroke="#6B6B6B"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </Arrow>
+    </RightWrapper>
   );
 };
-
-export default DictCard;
-

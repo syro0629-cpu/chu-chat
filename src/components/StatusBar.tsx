@@ -1,4 +1,8 @@
 import React from 'react';
+import lteIcon from "../assets/img/lte.png"
+import wifiIcon from "../assets/img/wifi.png"
+import batteryIcon from "../assets/img/battery.png"
+
 
 interface StatusBarProps {
   time?: string;
@@ -64,9 +68,18 @@ const StatusBar: React.FC<StatusBarProps> = ({ time = '9:41' }) => {
           }}
         >
           {/* 아이콘들은 이미지로 대체 가능 */}
-          <div style={{ width: '19.2px', height: '12.226px' }} />
-          <div style={{ width: '17.142px', height: '12.328px' }} />
-          <div style={{ width: '27.328px', height: '13px' }} />
+          <img
+            src = {lteIcon}
+            alt=""
+            style={{ width: '19.2px', height: '12.226px' }} />
+          <img 
+            src = {wifiIcon}
+            alt= ""
+            style={{ width: '17.142px', height: '12.328px' }} />
+          <img 
+            src = {batteryIcon}
+            alt = ""
+            style={{ width: '27.328px', height: '13px' }} />
         </div>
       </div>
     </div>

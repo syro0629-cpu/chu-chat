@@ -1,151 +1,159 @@
-import React, { useState } from 'react';
-import StatusBar from '../components/StatusBar';
-import HeaderBar from '../components/HeaderBar';
-import DictCard from '../components/DictCard';
-import ReminderPopup from '../components/ReminderPopup';
-import BingoPopup from '../components/BingoPopup';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { CardTopRight } from "../components/DictCard"; // 타입 확인 필요
+import HeaderBar from "../components/HeaderBar";
+import StatusBar from "../components/StatusBar";
+import bingoStamp from "../assets/img/bingostamp.png";
+import ReminderPopup from "../components/ReminderPopup"; // 팝업 import
+
+// ===================== Styled Components =====================
+const StyledDict = styled.div`
+  position: relative;
+  width: 402px;
+  height: 874px;
+  background: #ffffff;
+  overflow: hidden;
+`;
+
+const StyledTitle = styled.span`
+  position: absolute;
+  width: 297px;
+  height: 48px;
+  left: -23px;
+  top: 157px;
+  font-family: "Nunito", sans-serif;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 22px;
+  text-align: center;
+  letter-spacing: -0.43px;
+  color: #000000;
+`;
+
+const StyledImage38 = styled.img`
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  left: 338px;
+  top: 145px;
+`;
+
+const CardGrid = styled.div`
+  position: absolute;
+  top: 240px;
+  left: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, 182px);
+  gap: 18px 20px;
+`;
+
+const KeywordCard = styled.div`
+  position: relative;
+  width: 182px;
+  height: 146px;
+  border-radius: 15px;
+  background: white;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.03);
+  }
+`;
+
+const CardTop = styled.div`
+  height: 73px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  font-family: "SF Pro", sans-serif;
+  font-size: 17px;
+  font-weight: 510;
+  color: #000;
+`;
+
+const CardBottom = styled.div`
+  height: 73px;
+  background: rgba(92, 110, 255, 0.3);
+  padding: 8px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+
+const UpdateLabel = styled.span`
+  font-size: 10px;
+  color: #a9a9a9;
+  font-family: "SF Pro", sans-serif;
+`;
+
+const UpdateDate = styled.span`
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.6);
+  font-family: "SF Pro", sans-serif;
+`;
 
 interface DictProps {
-  onBack?: () => void;
+  onBack? : () => void ;
+  onClose? : () => void ; 
 }
 
-const Dict: React.FC<DictProps> = ({ onBack }) => {
-  const [selectedCard, setSelectedCard] = useState<string | null>(null);
-  const [showReminder, setShowReminder] = useState(false);
-  const [showBingo, setShowBingo] = useState(false);
-  const [reminderKeyword, setReminderKeyword] = useState('');
 
-  const keywords = [
-    { id: '1', title: 'S&P 500', subtitle: 'ETF', date: '2025.11.10', count: 7, position: { top: '214px', left: '8.76px' } },
-    { id: '2', title: 'ETF', date: '2025.11.11', count: 3, position: { top: '214px', left: '199.54px' } },
-    { id: '3', title: '나스닥', subtitle: 'PBR', date: '2025.11.10', count: 4, position: { top: '386px', left: '8.76px' } },
-    { id: '4', title: 'PER', date: '2025.11.10', position: { top: '386px', left: '199.54px' } },
-    { id: '5', title: 'EPS', date: '2025.11.10', count: 9, position: { top: '558px', left: '9.73px' } },
-    { id: '6', title: '배당수익률', date: '2025.11.10', count: 1, position: { top: '558px', left: '199.54px' } },
-    { id: '7', title: '시가총액', date: '2025.11.10', count: 8, position: { top: '730px', left: '9.73px' } },
-    { id: '8', title: '매도', date: '2025.11.10', count: 8, position: { top: '730px', left: '199.54px' } },
+// ===================== Component =====================
+const Dict: React.FC<DictProps> = ({onBack, onClose}) => {
+  const [selectedKeyword, setSelectedKeyword] = useState<string | null>(null);
+
+  const cards = [
+    { label: "S&P 500", date: "2025.11.10", num: "7" },
+    { label: "ETF", date: "2025.11.11", num: "3" },
+    { label: "나스닥", date: "2025.11.10", num: "5" },
+    { label: "PER", date: "2025.11.10", num: "4" },
+    { label: "EPS", date: "2025.11.10", num: "9" },
+    { label: "배당수익률", date: "2025.11.10", num: "6" },
+    { label: "시가총액", date: "2025.11.10", num: "8" },
+    { label: "매도", date: "2025.11.10", num: "2" },
   ];
 
-  const handleCardClick = (keyword: string) => {
-    setReminderKeyword(keyword);
-    setShowReminder(true);
-  };
-
-  const handleBingoClick = () => {
-    setShowBingo(true);
-  };
-
   return (
-    <div
-      style={{
-        position: 'relative',
-        width: '402px',
-        height: '874px',
-        backgroundColor: '#ffffff',
-        overflow: 'hidden',
-      }}
-    >
+    <StyledDict>
       <StatusBar />
-      <HeaderBar title="키우Me 도감" onBack={onBack} />
+      <HeaderBar
+        title="키우Me 도감"
+        onBack={onBack}
+        onClose={onClose}
+      />
 
-      {/* 도감 아이콘 버튼 */}
-      <button
-        onClick={handleBingoClick}
-        style={{
-          position: 'absolute',
-          right: '14px',
-          top: '145px',
-          width: '50px',
-          height: '50px',
-          background: 'none',
-          border: 'none',
-          cursor: 'pointer',
-        }}
-      >
-        🎯
-      </button>
+      <StyledTitle>키워드별 질문 확인하기</StyledTitle>
+      <StyledImage38 src={bingoStamp} alt="도감 아이콘" />
 
-      {/* 제목 */}
-      <p
-        style={{
-          position: 'absolute',
-          left: '50%',
-          top: '157px',
-          transform: 'translateX(-50%)',
-          fontFamily: 'Nunito, Noto Sans KR',
-          fontWeight: 'semibold',
-          fontSize: '24px',
-          color: '#000000',
-          textAlign: 'center',
-        }}
-      >
-        키워드별 질문 확인하기
-      </p>
+      <CardGrid>
+        {cards.map((card) => (
+          <KeywordCard
+            key={card.label} // key를 label로 고유하게 지정
+            onClick={() => setSelectedKeyword(card.label)}
+          >
+            <CardTop>
+              {card.label}
+              <CardTopRight number={card.num} />
+            </CardTop>
+            <CardBottom>
+              <UpdateLabel>최근 업데이트 일자</UpdateLabel>
+              <UpdateDate>{card.date}</UpdateDate>
+            </CardBottom>
+          </KeywordCard>
+        ))}
+      </CardGrid>
 
-      {/* 카드 그리드 영역 (스크롤 가능) */}
-      <div
-        style={{
-          position: 'absolute',
-          left: 0,
-          top: '120px',
-          width: '402px',
-          height: '756px',
-          backgroundColor: '#f7f7f7',
-          borderRadius: '3px',
-          overflowY: 'auto',
-          padding: '20px 10px',
-        }}
-      >
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '10px',
-            position: 'relative',
-          }}
-        >
-          {keywords.map((keyword) => (
-            <div
-              key={keyword.id}
-              style={{
-                position: 'relative',
-                width: '182.993px',
-                height: '73px',
-              }}
-            >
-              <DictCard
-                title={keyword.title}
-                subtitle={keyword.subtitle}
-                date={keyword.date}
-                count={keyword.count}
-                isSelected={selectedCard === keyword.id}
-                onClick={() => {
-                  setSelectedCard(keyword.id);
-                  handleCardClick(keyword.title);
-                }}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                }}
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Reminder 팝업 */}
-      {showReminder && (
+      {selectedKeyword && (
         <ReminderPopup
-          keyword={reminderKeyword}
-          onClose={() => setShowReminder(false)}
+          keyword={selectedKeyword}
+          onClose={() => setSelectedKeyword(null)}
         />
       )}
-
-      {/* Bingo 팝업 */}
-      {showBingo && (
-        <BingoPopup onClose={() => setShowBingo(false)} />
-      )}
-    </div>
+    </StyledDict>
   );
 };
 

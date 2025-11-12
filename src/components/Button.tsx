@@ -27,7 +27,6 @@ const Button: React.FC<ButtonProps> = ({
     fontSize: '20px',
     lineHeight: '1.4',
     color: variant === 'primary' ? '#ffffff' : '#000000',
-    textTransform: 'uppercase',
     letterSpacing: '0.2px',
     ...style,
   };

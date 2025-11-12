@@ -1,6 +1,7 @@
 import React from 'react';
 import StatusBar from '../components/StatusBar';
-import HeaderBar from '../components/HeaderBar';
+import Kiwoome from "../assets/img/kiwoome.png"
+
 
 interface HomeProps {
   onNavigateToIntro?: () => void;
@@ -14,12 +15,44 @@ const Home: React.FC<HomeProps> = ({ onNavigateToIntro }) => {
         width: '402px',
         height: '874px',
         backgroundColor: '#ffffff',
-        border: '1px solid #000000',
         overflow: 'hidden',
       }}
     >
       <StatusBar />
-      <HeaderBar title="일취월Chat" />
+      {/* 상위 카테고리 */}
+      <div
+        style={{
+          position:"absolute",
+          top:"120px",
+          left:"20px",
+          display:"flex",
+          gap:"18px",
+          fontFamily:"SF pro",
+          fontSize:"20px"
+        }}>
+          <span style ={{
+            fontWeight: "bold",
+            color:"#000000",
+            borderBottom:"2px solid #000000",
+            paddingBottom:"3px"
+          }}>
+            국내
+          </span>
+          <span style ={{
+            fontWeight: "normal",
+            color:"#a9a9a9",
+            paddingBottom:"3px"
+          }}>
+            해외
+          </span>
+          <span style ={{
+            fontWeight: "normal",
+            color:"#a9a9a9",
+            paddingBottom:"3px"
+          }}>
+            상품
+          </span>
+      </div>
 
       {/* 검색창 */}
       <div
@@ -29,7 +62,7 @@ const Home: React.FC<HomeProps> = ({ onNavigateToIntro }) => {
           top: '180px',
           width: '370px',
           height: '50px',
-          backgroundColor: '#ffffff',
+          backgroundColor: '#f5f5f5',
           borderRadius: '10px',
           display: 'flex',
           alignItems: 'center',
@@ -49,14 +82,21 @@ const Home: React.FC<HomeProps> = ({ onNavigateToIntro }) => {
       </div>
 
       {/* 카테고리 태그 */}
-      <div style={{ position: 'absolute', left: '15px', top: '246px', display: 'flex', gap: '8px' }}>
-        {['#고영', '#삼성전자', '#SK하이닉스', '#일동제약'].map((tag) => (
+      <div style={{ 
+        position: 'absolute', 
+        left: '15px', 
+        top: '246px',
+        display: 'flex', 
+        gap: "8px",
+        flexWrap:"wrap",
+        }}>
+          {['#고영', '#삼성전자', '#SK하이닉스', '#일동제약'].map((tag) => (
           <div
             key={tag}
             style={{
-              backgroundColor: '#ffffff',
+              backgroundColor: '#f5f5f5',
               borderRadius: '20px',
-              padding: '8px 16px',
+              padding: '5px 12px',
               fontFamily: 'SF Pro',
               fontWeight: 'bold',
               fontSize: '15px',
@@ -121,7 +161,7 @@ const Home: React.FC<HomeProps> = ({ onNavigateToIntro }) => {
         </p>
 
         {/* 탭 메뉴 */}
-        <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
+        <div style={{ display: 'flex', gap: '20px', marginBottom: '20px' }}>
           {['실시간 조회', '조회수 급증', '매매 상위'].map((tab, idx) => (
             <div
               key={tab}
@@ -141,7 +181,7 @@ const Home: React.FC<HomeProps> = ({ onNavigateToIntro }) => {
         </div>
 
         {/* 주가 리스트 */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           {[
             { name: '1 고영', price: '20,550', change: '▲ 26.23%', color: '#e12e73' },
             { name: '2 SK하이닉스', price: '604,000', change: '▲ 4.32%', color: '#e12e73' },
@@ -154,18 +194,37 @@ const Home: React.FC<HomeProps> = ({ onNavigateToIntro }) => {
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
+                
               }}
             >
               <p style={{ fontFamily: 'SF Pro', fontWeight: 'bold', fontSize: '18px' }}>
                 {item.name}
               </p>
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <p style={{ fontFamily: 'SF Pro', fontWeight: 'bold', fontSize: '18px', color: item.color }}>
-                  {item.price}
-                </p>
-                <p style={{ fontFamily: 'SF Pro', fontWeight: 'bold', fontSize: '18px', color: item.color }}>
-                  {item.change}
-                </p>
+              <div style={{ 
+                display: 'flex',
+                alignItems:"center",
+                justifyContent:"flex-end", 
+                gap: '10px',
+                width:"180px"
+                }}>
+                  <p style={{ 
+                    fontFamily: 'SF Pro', 
+                    fontWeight: 'bold', 
+                    fontSize: '18px', 
+                    color: item.color,
+                    textAlign:"right",
+                    width:"90px"}}>
+                    {item.price}
+                  </p>
+                  <p style={{ 
+                    fontFamily: 'SF Pro', 
+                    fontWeight: 'bold', 
+                    fontSize: '18px', 
+                    color: item.color,
+                    textAlign:"left",
+                    width:"100px" }}>
+                    {item.change}
+                  </p>
               </div>
             </div>
           ))}
@@ -190,7 +249,13 @@ const Home: React.FC<HomeProps> = ({ onNavigateToIntro }) => {
           fontSize: '80px',
         }}
       >
-        🤖
+        <img
+          src={Kiwoome}
+          alt=""
+          style={{
+            width:"200px",
+            height:"200px"
+          }}/>
       </button>
 
       {/* 대화 버튼 */}
@@ -198,12 +263,14 @@ const Home: React.FC<HomeProps> = ({ onNavigateToIntro }) => {
         onClick={onNavigateToIntro}
         style={{
           position: 'absolute',
-          left: '91px',
-          top: '712px',
+          left: '75px',
+          top: '630px',
           width: '158px',
           height: '73px',
           backgroundColor: '#606cf2',
-          borderRadius: '10px',
+          borderTopRightRadius: '10px',
+          borderTopLeftRadius: '10px',
+          borderBottomLeftRadius: '10px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -233,7 +300,7 @@ const Home: React.FC<HomeProps> = ({ onNavigateToIntro }) => {
           top: '809px',
           width: '402px',
           height: '65px',
-          backgroundColor: '#ffffff',
+          backgroundColor: '#f5f5f5',
           display: 'flex',
           justifyContent: 'space-around',
           alignItems: 'center',

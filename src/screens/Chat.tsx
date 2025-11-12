@@ -2,13 +2,20 @@ import React, { useState, useRef, useEffect } from 'react';
 import StatusBar from '../components/StatusBar';
 import HeaderBar from '../components/HeaderBar';
 import MessageBubble from '../components/MessageBubble';
+import ChildHead from "../assets/img/child_head.png";
+import VeteranHead from "../assets/img/veteran_head.png";
+import Dict from "../assets/img/dict_icon.png";
+import MessageIcon from "../assets/img/message_icon.png";
 
 interface ChatProps {
+  selectedType: "beginner" | "veteran" ;
   onBack?: () => void;
   onViewDict?: () => void;
 }
 
-const Chat: React.FC<ChatProps> = ({ onBack, onViewDict }) => {
+const Chat: React.FC<ChatProps> = ({ selectedType, onBack, onViewDict }) => {
+  const profileImg = selectedType === "beginner" ? ChildHead : VeteranHead;
+  const profileName = selectedType === "beginner" ? "입문자 키우Me" : "베테랑 키우Me"
   const [messages, setMessages] = useState([
     {
       id: 1,
@@ -21,6 +28,7 @@ const Chat: React.FC<ChatProps> = ({ onBack, onViewDict }) => {
       isUser: false,
     },
   ]);
+
   const [inputValue, setInputValue] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -77,7 +85,10 @@ const Chat: React.FC<ChatProps> = ({ onBack, onViewDict }) => {
           gap: '4px',
         }}
       >
-        <span style={{ fontSize: '24px' }}>📖</span>
+        <img 
+          src={Dict}
+          alt=""
+          style = {{width:"20px", height:"20px"}}/>
         <p
           style={{
             fontFamily: 'Gabarito, Noto Sans KR',
@@ -86,7 +97,7 @@ const Chat: React.FC<ChatProps> = ({ onBack, onViewDict }) => {
             color: '#a9a9a9',
           }}
         >
-          도감확인
+          도감
         </p>
       </button>
 
@@ -100,39 +111,57 @@ const Chat: React.FC<ChatProps> = ({ onBack, onViewDict }) => {
           height: '694px',
           overflowY: 'auto',
           padding: '20px',
+          paddingTop:"100px",
           display: 'flex',
           flexDirection: 'column',
           gap: '20px',
+          scrollBehavior:"smooth"
         }}
       >
-        {messages.map((message) => (
-          <div
-            key={message.id}
-            style={{
+        {messages.map((message, idx) => (
+          <div key={message.id}>
+            {/*챗봇 프로필*/}
+            {!message.isUser && (idx === 0 || messages[idx -1].isUser) && (
+              <div
+              style={{
+                display:"flex",
+                alignItems:"center",
+                gap:"5px",
+                marginBottom:"6px"
+              }}>
+                <img
+                  src={profileImg}
+                  alt=""
+                  style={{width:"60px", height:"60px", objectFit:"cover"}}/>
+                <span style={{
+                  fontFamily: "Gabarito, Noto sans KR",
+                  fontWeight:600,
+                  fontSize:"13px",
+                  color:"#000000"
+                }}>
+                  {profileName}
+                </span>
+              </div>
+            )}
+            {/*말풍선*/}
+            <div style={{
               display: 'flex',
               justifyContent: message.isUser ? 'flex-end' : 'flex-start',
               alignItems: 'flex-start',
-              gap: '10px',
+              gap: '0px',
+              marginLeft: message.isUser ? "0" : "-20px"
             }}
           >
-            {!message.isUser && (
-              <div
-                style={{
-                  width: '60px',
-                  height: '60px',
-                  backgroundColor: '#f0f0f0',
-                  borderRadius: '50%',
-                  flexShrink: 0,
-                }}
+              {!message.isUser && (
+                <div
+                  style={{width: '40px', flexShrink: 0,}}/>
+              )}
+              <MessageBubble
+                message={message.text}
+                isUser={message.isUser}
+                style={{maxWidth: '280px',}}
               />
-            )}
-            <MessageBubble
-              message={message.text}
-              isUser={message.isUser}
-              style={{
-                maxWidth: '280px',
-              }}
-            />
+            </div>
           </div>
         ))}
         <div ref={messagesEndRef} />
@@ -153,41 +182,71 @@ const Chat: React.FC<ChatProps> = ({ onBack, onViewDict }) => {
           gap: '10px',
         }}
       >
-        <input
-          type="text"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-          placeholder="키우Me에게 물어보세요"
-          style={{
-            flex: 1,
-            border: '1px solid #6f7bff',
-            borderRadius: '20px',
-            padding: '10px 20px',
-            fontFamily: 'ABeeZee, Noto Sans KR',
-            fontSize: '14px',
-            color: '#a9a9a9',
-            outline: 'none',
-          }}
-        />
-        <button
-          onClick={handleSend}
-          style={{
-            width: '40px',
-            height: '40px',
-            backgroundColor: '#606cf2',
-            border: 'none',
-            borderRadius: '50%',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#ffffff',
-            fontSize: '20px',
-          }}
-        >
-          →
-        </button>
+        <div style={{
+          flex:1,
+          height:"40px",
+          position:"relative",
+          display:"flex",
+          alignItems:"center",
+          borderRadius:"30px",
+          padding:"2px",
+          background:"linear-gradient(90deg, #6F7BFF, #D6A2FF)"
+        }}>
+          <div style={{
+            backgroundColor:"#ffffff",
+            borderRadius:"30px",
+            width:"100%",
+            height:"100%",
+            display:"flex",
+            alignItems:"center",
+            justifyContent:"space-between",
+            padding:"8px 10px 8px 18px"
+          }}>
+            <input
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+              placeholder="키우Me에게 물어보세요"
+              style={{
+                flex: 1,
+                fontFamily: 'ABeeZee, Noto Sans KR',
+                fontSize: '14px',
+                color: '#a9a9a9',
+                outline: 'none',
+                border:"none"
+              }}
+            />
+            <button
+              onClick={handleSend}
+              style={{
+                position:"absolute",
+                right:"1px",
+                width: '36px',
+                height: '36px',
+                background: "linear-gradient(135deg, #6F7BFF, #9BA5FF, #A4E2CE)",
+                border: 'none',
+                borderRadius: '50%',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#ffffff',
+                fontSize: '20px',
+              }}
+            >
+              <img 
+                src={MessageIcon}
+                alt=""
+                style={{
+                  width:"40px", 
+                  height:"40px", 
+                  objectFit:"contain", 
+                  transform:"translate(4px, -3px)",
+                  }}/>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
