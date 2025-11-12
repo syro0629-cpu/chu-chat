@@ -25,7 +25,7 @@ const Intro: React.FC<IntroProps> = ({ onGoChat, onSelectCharacter, onViewDict, 
       }}
     >
       <StatusBar />
-      <HeaderBar title="일취월Chat" onBack={onBack} onClose={onClose} />
+      <HeaderBar title="일취월챗" onBack={onBack} onClose={onClose} />
 
       {/* 친밀도 */}
       <div style={{position: "relative", top:"50px"}}>

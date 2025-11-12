@@ -84,7 +84,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ title, onBack, onClose }) => {
           top: '50%',
           transform: 'translate(-50%, -50%)',
           fontFamily: 'Nunito, Noto Sans KR',
-          fontWeight: 'bold',
+          fontWeight: '550',
           fontSize: '20px',
           lineHeight: '22px',
           color: '#ffffff',

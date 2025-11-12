@@ -52,7 +52,7 @@ const CharacterSelection: React.FC<CharacterSelectionProps> = ({
       }}
     >
       <StatusBar />
-      <HeaderBar title="일취월Chat" onBack={onBack} onClose={onClose} />
+      <HeaderBar title="일취월챗" onBack={onBack} onClose={onClose} />
 
       {/* 캐릭터 이미지 영역 */}
       <img
