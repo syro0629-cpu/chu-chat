@@ -5,12 +5,18 @@ import CharacterSelection from './screens/CharacterSelection';
 import Chat from './screens/Chat';
 import Dict from './screens/Dict';
 
-type Screen = 'home' | 'intro' | 'character1' | 'character2' | 'chat' | 'dict';
+type Screen = 'home' | 'intro' | 'characterSelection' | 'chat' | 'dict';
 type CharacterType ="beginner" | "veteran" | null;
 
 const App: React.FC = () => {
   const [currentScreen, setCurrentScreen] = useState<Screen>('home');
   const [selectedType, setSelectedType] = useState<CharacterType>(null);
+  const [prevScreen, setPrevScreen] = useState<Screen>("home");
+
+  const handleGoChat = () => {
+    if (selectedType) {setCurrentScreen("chat");} else {setCurrentScreen("characterSelection");}
+  };
+
 
   return (
     <div
@@ -36,35 +42,33 @@ const App: React.FC = () => {
         )}
         {currentScreen === 'intro' && (
           <Intro
-            onSelectCharacter={() => setCurrentScreen('character1')}
-            onViewDict={() => setCurrentScreen('dict')}
+            onGoChat = {handleGoChat}
+            onSelectCharacter={() => setCurrentScreen('characterSelection')}
+            onViewDict={() => {setPrevScreen("intro"); setCurrentScreen('dict');}}
+            onBack={() => setCurrentScreen("home")}
+            onClose={() => setCurrentScreen("home")}
           />
         )}
-        {currentScreen === 'character1' && (
+        {currentScreen === 'characterSelection' && (
           <CharacterSelection
-            type="beginner"
-            onSelect={() => {setCurrentScreen('chat'); setSelectedType("beginner");}}
-            onSkip={() => {setCurrentScreen('chat'); setSelectedType("beginner");}}
+            onSelect={(type) => {setSelectedType(type); setCurrentScreen("chat");}}
             onBack={() => setCurrentScreen('intro')}
-          />
-        )}
-        {currentScreen === 'character2' && (
-          <CharacterSelection
-            type="veteran"
-            onSelect={() => {setCurrentScreen('chat'); setSelectedType("veteran");}}
-            onSkip={() => {setCurrentScreen('chat'); setSelectedType("veteran");}}
-            onBack={() => setCurrentScreen('intro')}
+            onClose={() => setCurrentScreen("home")}
           />
         )}
         {currentScreen === 'chat' && selectedType && (
           <Chat
             selectedType={selectedType}
-            onBack={() => setCurrentScreen('home')}
-            onViewDict={() => setCurrentScreen('dict')}
+            onBack={() => setCurrentScreen('intro')}
+            onClose={() => setCurrentScreen("home")}
+            onViewDict={() => {setPrevScreen("chat"); setCurrentScreen('dict')}}
           />
         )}
         {currentScreen === 'dict' && (
-          <Dict onBack={() => setCurrentScreen('home')} />
+          <Dict 
+          onBack={() => setCurrentScreen(prevScreen)} 
+          onClose={() => setCurrentScreen("home")}
+          />
         )}
       </div>
     </div>

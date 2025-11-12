@@ -10,12 +10,13 @@ import MessageIcon from "../assets/img/message_icon.png";
 interface ChatProps {
   selectedType: "beginner" | "veteran" ;
   onBack?: () => void;
+  onClose?: () => void;
   onViewDict?: () => void;
 }
 
-const Chat: React.FC<ChatProps> = ({ selectedType, onBack, onViewDict }) => {
+const Chat: React.FC<ChatProps> = ({ selectedType, onBack, onClose, onViewDict }) => {
   const profileImg = selectedType === "beginner" ? ChildHead : VeteranHead;
-  const profileName = selectedType === "beginner" ? "입문자 키우Me" : "베테랑 키우Me"
+  const profileName = selectedType === "beginner" ? "입문자 멘토" : "베테랑 멘토"
   const [messages, setMessages] = useState([
     {
       id: 1,
@@ -24,7 +25,7 @@ const Chat: React.FC<ChatProps> = ({ selectedType, onBack, onViewDict }) => {
     },
     {
       id: 2,
-      text: '매도란?\n매도란 보유하고 있는 주식이나 금융상품을\n시장에 내다 파는 행위를 의미합니다.\n매도를 통해 투자자는 보유 자산을 현금화하거나\n손실을 줄일 수 있습니다.\n키움증권의 영웅문 시스템을 통해 쉽게 매도 주문\n가능하며, 매도 시점과 가격에 따라 투자 수익이\n결정됩니다.\n매도는 투자에서 중요한 거래 행위 중 하나로,\n시장 상황과 투자 전략에 따라 적절한 시점에\n이루어져야 합니다.',
+      text: '매도란?\n매도란 보유하고 있는 주식이나 금융상품을 시장에 내다 파는 행위를 의미합니다. 매도를 통해 투자자는 보유 자산을 현금화하거나 손실을 줄일 수 있습니다. 키움증권의 영웅문 시스템을 통해 쉽게 매도 주문 가능하며, 매도 시점과 가격에 따라 투자 수익이 결정됩니다. 매도는 투자에서 중요한 거래 행위 중 하나로, 시장 상황과 투자 전략에 따라 적절한 시점에 이루어져야 합니다.',
       isUser: false,
     },
   ]);
@@ -65,7 +66,7 @@ const Chat: React.FC<ChatProps> = ({ selectedType, onBack, onViewDict }) => {
       }}
     >
       <StatusBar />
-      <HeaderBar title="일취월Chat" onBack={onBack} />
+      <HeaderBar title="일취월챗" onBack={onBack} onClose={onClose} />
 
       {/* 도감 확인 버튼 */}
       <button
@@ -83,6 +84,7 @@ const Chat: React.FC<ChatProps> = ({ selectedType, onBack, onViewDict }) => {
           flexDirection: 'column',
           alignItems: 'center',
           gap: '4px',
+          zIndex: 10,
         }}
       >
         <img 
@@ -97,7 +99,7 @@ const Chat: React.FC<ChatProps> = ({ selectedType, onBack, onViewDict }) => {
             color: '#a9a9a9',
           }}
         >
-          도감
+          도감확인
         </p>
       </button>
 

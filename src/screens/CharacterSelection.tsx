@@ -9,19 +9,16 @@ import LeftVector from "../assets/img/vector3.png";
 
 
 interface CharacterSelectionProps {
-  type: 'beginner' | 'veteran';
-  onSelect?: () => void;
-  onSkip?: () => void;
+  onSelect?: (type: "beginner"|"veteran") => void;
   onBack?: () => void;
+  onClose?: () => void;
 }
 
 const CharacterSelection: React.FC<CharacterSelectionProps> = ({
-  type,
   onSelect,
-  onSkip,
   onBack,
-}) => {
-  const [currentType, setCurrentType] = useState(type);
+  onClose,
+}) => {const [currentType, setCurrentType] = useState<"beginner"|"veteran">("beginner");
 
   const handlePrev = () => {
     setCurrentType(currentType === 'beginner' ? 'veteran' : 'beginner');
@@ -33,11 +30,11 @@ const CharacterSelection: React.FC<CharacterSelectionProps> = ({
 
   const characterData = {
     beginner: {
-      title: '입문자 키우Me',
+      title: '입문자 멘토',
       description: '투자, 아직도 어렵게 느껴지죠?\n같이 차근차근 알아가요!\n제가 바로 당신의 첫 투자 멘토예요 🙌',
     },
     veteran: {
-      title: '베테랑 키우Me',
+      title: '베테랑 멘토',
       description: '투자, 수익률, 어떻게 느끼세요?\n제가 대신 분석해 드릴게요!\n제가 바로 당신의 투자 파트너예요 😊',
     },
   };
@@ -55,7 +52,7 @@ const CharacterSelection: React.FC<CharacterSelectionProps> = ({
       }}
     >
       <StatusBar />
-      <HeaderBar title="일취월Chat" onBack={onBack} />
+      <HeaderBar title="일취월Chat" onBack={onBack} onClose={onClose} />
 
       {/* 캐릭터 이미지 영역 */}
       <img
@@ -168,14 +165,17 @@ const CharacterSelection: React.FC<CharacterSelectionProps> = ({
         alignItems:"center",
         gap:"20px"
       }}>
-          <Button onClick={onSelect} style={{
+          <Button onClick={() => onSelect?.(currentType)} 
+          style={{
             width:"100%", 
             fontWeight:"500"}}>
               선택하기
           </Button>
 
         {/* 건너뛰기 버튼 */}
-          <Button variant="secondary" onClick={onSkip} style={{width:"100%", fontWeight:500}}>
+          <Button variant="secondary" onClick={() => onSelect?.(currentType)} 
+          style={{
+            width:"100%", fontWeight:500}}>
             건너뛰기
           </Button>
       </div>

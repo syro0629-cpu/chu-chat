@@ -6,13 +6,14 @@ import Heart from "../assets/img/heart.png";
 import IntroKiwoome from "../assets/img/intro_kiwoome.png";
 
 interface IntroProps {
+  onGoChat? : () => void;
   onSelectCharacter?: () => void;
   onViewDict?: () => void;
   onBack?: () => void;
   onClose?: () => void;
 }
 
-const Intro: React.FC<IntroProps> = ({ onSelectCharacter, onViewDict, onBack, onClose }) => {
+const Intro: React.FC<IntroProps> = ({ onGoChat, onSelectCharacter, onViewDict, onBack, onClose }) => {
   return (
     <div
       style={{
@@ -86,7 +87,7 @@ const Intro: React.FC<IntroProps> = ({ onSelectCharacter, onViewDict, onBack, on
             width: '345px',
           }}
         >
-          <Button onClick={onSelectCharacter} 
+          <Button onClick={onGoChat} 
           style={{ 
             width: '100%', 
             minHeight: '64px',
