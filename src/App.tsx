@@ -12,11 +12,21 @@ const App: React.FC = () => {
   const [currentScreen, setCurrentScreen] = useState<Screen>('home');
   const [selectedType, setSelectedType] = useState<CharacterType>(null);
   const [prevScreen, setPrevScreen] = useState<Screen>("home");
-
+  
+  {/*Chat 메시지 관리*/}
+  const [chatMessages, setChatMessages] = useState<any[]>([]);
+  
+  {/*chat 바로가기 로직*/}
   const handleGoChat = () => {
     if (selectedType) {setCurrentScreen("chat");} else {setCurrentScreen("characterSelection");}
   };
 
+  {/*캐릭터 선택으로, 타입 바뀌면 메시지 리셋*/}
+  const handleSelectCharacter = (type: "beginner" | "veteran") => {
+    setSelectedType(type);
+    setChatMessages([]);
+    setCurrentScreen("chat");
+  };
 
   return (
     <div
@@ -51,7 +61,7 @@ const App: React.FC = () => {
         )}
         {currentScreen === 'characterSelection' && (
           <CharacterSelection
-            onSelect={(type) => {setSelectedType(type); setCurrentScreen("chat");}}
+            onSelect={handleSelectCharacter}
             onBack={() => setCurrentScreen('intro')}
             onClose={() => setCurrentScreen("home")}
           />
@@ -59,6 +69,8 @@ const App: React.FC = () => {
         {currentScreen === 'chat' && selectedType && (
           <Chat
             selectedType={selectedType}
+            messages={chatMessages}
+            setMessages={setChatMessages}
             onBack={() => setCurrentScreen('intro')}
             onClose={() => setCurrentScreen("home")}
             onViewDict={() => {setPrevScreen("chat"); setCurrentScreen('dict')}}

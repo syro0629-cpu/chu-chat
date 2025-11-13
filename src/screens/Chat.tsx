@@ -9,25 +9,35 @@ import MessageIcon from "../assets/img/message_icon.png";
 
 interface ChatProps {
   selectedType: "beginner" | "veteran" ;
+  messages: any[];
+  setMessages: (msgs: any[]) => void;
   onBack?: () => void;
   onClose?: () => void;
   onViewDict?: () => void;
 }
 
-const Chat: React.FC<ChatProps> = ({ selectedType, onBack, onClose, onViewDict }) => {
+const Chat: React.FC<ChatProps> = ({ 
+  selectedType,
+  messages,
+  setMessages, 
+  onBack, 
+  onClose, 
+  onViewDict }) => {
   const profileImg = selectedType === "beginner" ? ChildHead : VeteranHead;
   const profileName = selectedType === "beginner" ? "입문자 멘토" : "베테랑 멘토";
   const initialMessage = selectedType === "beginner"
-  ? "안녕하세요!\n저는 입문자 멘토입니다." : "안녕하세요!\n저는 베테랑 멘토입니다.";
+  ? "안녕하세요! 입문자 멘토입니다.\n 무엇을 알려드릴까요?" 
+  : "안녕하세요! 베테랑 멘토입니다.\n 무엇을 알려드릴까요?";
   
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      text: initialMessage,
-      isUser: false,
+  useEffect(() => {
+    if (messages.length === 0) {
+      setMessages([{
+        id:1,
+        text: initialMessage,
+        isUser: false
+      }]);
     }
-  ]);
-
+  }, []);
   const [inputValue, setInputValue] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -66,47 +76,12 @@ const Chat: React.FC<ChatProps> = ({ selectedType, onBack, onClose, onViewDict }
       <StatusBar />
       <HeaderBar title="일취월챗" onBack={onBack} onClose={onClose} />
 
-      {/* 도감 확인 버튼 */}
-      <button
-        onClick={onViewDict}
-        style={{
-          position: 'absolute',
-          left: '10px',
-          top: '132px',
-          width: '39px',
-          height: '35px',
-          background: 'none',
-          border: 'none',
-          cursor: 'pointer',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '4px',
-          zIndex: 10,
-        }}
-      >
-        <img 
-          src={Dict}
-          alt=""
-          style = {{width:"20px", height:"20px"}}/>
-        <p
-          style={{
-            fontFamily: 'Gabarito, Noto Sans KR',
-            fontWeight: 'semibold',
-            fontSize: '10px',
-            color: '#a9a9a9',
-          }}
-        >
-          도감확인
-        </p>
-      </button>
-
       {/* 메시지 영역 (스크롤 가능) */}
       <div
         style={{
           position: 'absolute',
           left: 0,
-          top: '120px',
+          top: '100px',
           width: '402px',
           height: '694px',
           overflowY: 'auto',
@@ -118,6 +93,23 @@ const Chat: React.FC<ChatProps> = ({ selectedType, onBack, onClose, onViewDict }
           scrollBehavior:"smooth"
         }}
       >
+        {/*유의사항-스크롤되며 위로 사라짐*/}
+        <div style={{textAlign:"center", marginTop:"-20px", marginBottom:"10px"}}>
+          <strong style={{
+            color: "#666666",
+            fontSize:"12px", 
+            fontWeight:500}}>
+              일취월챗 이용 유의사항
+          </strong>
+          <div style={{
+            marginTop:"4px", 
+            fontSize: "11px", 
+            color:"#666666",
+            lineHeight:"15px"}}> 
+            일취월챗의 답변은 생성형 AI를 활용한 답변으로 사실과 다를 수 있어요.
+          </div> 
+        </div>
+
         {messages.map((message, idx) => (
           <div key={message.id}>
             {/*챗봇 프로필*/}
@@ -180,21 +172,56 @@ const Chat: React.FC<ChatProps> = ({ selectedType, onBack, onClose, onViewDict }
           display: 'flex',
           alignItems: 'center',
           padding: '0 20px',
+          gap:"10px"
         }}
       >
+        {/*도감버튼*/}
+        <button
+          onClick={onViewDict}
+          style={{
+            width: '39px',
+            height: '35px',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent:"center",
+            gap: '2px',
+            flexDirection:"column",
+            whiteSpace:"nowrap",
+            marginLeft:"-10px",
+            marginTop:"8px"
+          }}
+        >
+          <img 
+            src={Dict}
+            alt=""
+            style = {{width:"20px", height:"20px"}}/>
+          <p
+            style={{
+              fontFamily: 'Gabarito, Noto Sans KR',
+              fontWeight: 'semibold',
+              fontSize: '10px',
+              color: '#a9a9a9',
+            }}
+          >
+            도감확인
+          </p>
+        </button>
         <div style={{
           flex:1,
           height:"40px",
           display:"flex",
           alignItems:"center",
-          justifyContent:"space-between",
           borderRadius:"30px",
           border:"1.2px solid transparent",
-          padding:"0 0 0 12px",
+          padding:"0 6px 0 14px",
           background:"linear-gradient(#fff, #fff) padding-box,linear-gradient(90deg, #6F7BFF, #D6A2FF) border-box",
           backgroundOrigin:"padding-box, border-box",
           backgroundClip:"padding-box, border-box",
-          boxSizing:"border-box"
+          boxSizing:"border-box",
+          gap:"0px"
         }}>
           {/*input box */}
             <input
@@ -210,9 +237,12 @@ const Chat: React.FC<ChatProps> = ({ selectedType, onBack, onClose, onViewDict }
                 color: '#000000',
                 outline: 'none',
                 border:"none",
-                paddingRight:"10px"
+                paddingLeft:"5px",
+                paddingRight:"5px"
               }}
             />
+
+            {/*전송버튼*/}
             <button
               onClick={handleSend}
               style={{
@@ -225,6 +255,7 @@ const Chat: React.FC<ChatProps> = ({ selectedType, onBack, onClose, onViewDict }
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                marginRight:"-6px"
               }}
             >
               <img 

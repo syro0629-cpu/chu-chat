@@ -11,9 +11,16 @@ interface IntroProps {
   onViewDict?: () => void;
   onBack?: () => void;
   onClose?: () => void;
+  affinity?: number;
 }
-
-const Intro: React.FC<IntroProps> = ({ onGoChat, onSelectCharacter, onViewDict, onBack, onClose }) => {
+{/*TODO: affinity 기준으로 백이랑 연결해서, 친밀도 보여주기 */}
+const Intro: React.FC<IntroProps> = ({ 
+  onGoChat, 
+  onSelectCharacter, 
+  onViewDict, 
+  onBack, 
+  onClose, 
+  affinity = 0 }) => {
   return (
     <div
       style={{
@@ -57,7 +64,7 @@ const Intro: React.FC<IntroProps> = ({ onGoChat, onSelectCharacter, onViewDict, 
             marginTop:"-3px",
             width:"30px",
             }}>
-              0
+              {affinity}
           </p>
         </div>
 
