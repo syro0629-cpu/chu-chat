@@ -1,14 +1,23 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import lteIcon from "../assets/img/lte.png"
 import wifiIcon from "../assets/img/wifi.png"
 import batteryIcon from "../assets/img/battery.png"
 
 
-interface StatusBarProps {
-  time?: string;
-}
+const StatusBar: React.FC = () => {
+  const [time, setTime] = useState<string>(() => {
+    const now = new Date();
+    return now.toLocaleTimeString("ko-kr", {hour:"2-digit", minute:"2-digit", hour12: false});
+  });
 
-const StatusBar: React.FC<StatusBarProps> = ({ time = '9:41' }) => {
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const now = new Date();
+      setTime(now.toLocaleTimeString("ko-KR", {hour:"2-digit", minute:"2-digit", hour12: false}));
+    }, 1000 * 60);
+
+    return () => clearInterval(timer);},[]); 
+
   return (
     <div
       style={{

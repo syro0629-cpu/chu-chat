@@ -16,18 +16,16 @@ interface ChatProps {
 
 const Chat: React.FC<ChatProps> = ({ selectedType, onBack, onClose, onViewDict }) => {
   const profileImg = selectedType === "beginner" ? ChildHead : VeteranHead;
-  const profileName = selectedType === "beginner" ? "입문자 멘토" : "베테랑 멘토"
+  const profileName = selectedType === "beginner" ? "입문자 멘토" : "베테랑 멘토";
+  const initialMessage = selectedType === "beginner"
+  ? "안녕하세요!\n저는 입문자 멘토입니다." : "안녕하세요!\n저는 베테랑 멘토입니다.";
+  
   const [messages, setMessages] = useState([
     {
       id: 1,
-      text: '매도에 대해 알고 싶어',
-      isUser: true,
-    },
-    {
-      id: 2,
-      text: '매도란?\n매도란 보유하고 있는 주식이나 금융상품을 시장에 내다 파는 행위를 의미합니다. 매도를 통해 투자자는 보유 자산을 현금화하거나 손실을 줄일 수 있습니다. 키움증권의 영웅문 시스템을 통해 쉽게 매도 주문 가능하며, 매도 시점과 가격에 따라 투자 수익이 결정됩니다. 매도는 투자에서 중요한 거래 행위 중 하나로, 시장 상황과 투자 전략에 따라 적절한 시점에 이루어져야 합니다.',
+      text: initialMessage,
       isUser: false,
-    },
+    }
   ]);
 
   const [inputValue, setInputValue] = useState('');
@@ -134,12 +132,13 @@ const Chat: React.FC<ChatProps> = ({ selectedType, onBack, onClose, onViewDict }
                 <img
                   src={profileImg}
                   alt=""
-                  style={{width:"60px", height:"60px", objectFit:"cover"}}/>
+                  style={{width:"50px", height:"50px", objectFit:"cover"}}/>
                 <span style={{
                   fontFamily: "Gabarito, Noto sans KR",
-                  fontWeight:600,
-                  fontSize:"13px",
-                  color:"#000000"
+                  fontWeight:500,
+                  fontSize:"12px",
+                  color:"#000000",
+                  marginTop:"5px"
                 }}>
                   {profileName}
                 </span>
@@ -151,7 +150,7 @@ const Chat: React.FC<ChatProps> = ({ selectedType, onBack, onClose, onViewDict }
               justifyContent: message.isUser ? 'flex-end' : 'flex-start',
               alignItems: 'flex-start',
               gap: '0px',
-              marginLeft: message.isUser ? "0" : "-20px"
+              marginLeft: message.isUser ? "0" : "-15px"
             }}
           >
               {!message.isUser && (
@@ -181,29 +180,23 @@ const Chat: React.FC<ChatProps> = ({ selectedType, onBack, onClose, onViewDict }
           display: 'flex',
           alignItems: 'center',
           padding: '0 20px',
-          gap: '10px',
         }}
       >
         <div style={{
           flex:1,
           height:"40px",
-          position:"relative",
           display:"flex",
           alignItems:"center",
+          justifyContent:"space-between",
           borderRadius:"30px",
-          padding:"2px",
-          background:"linear-gradient(90deg, #6F7BFF, #D6A2FF)"
+          border:"1.2px solid transparent",
+          padding:"0 0 0 12px",
+          background:"linear-gradient(#fff, #fff) padding-box,linear-gradient(90deg, #6F7BFF, #D6A2FF) border-box",
+          backgroundOrigin:"padding-box, border-box",
+          backgroundClip:"padding-box, border-box",
+          boxSizing:"border-box"
         }}>
-          <div style={{
-            backgroundColor:"#ffffff",
-            borderRadius:"30px",
-            width:"100%",
-            height:"100%",
-            display:"flex",
-            alignItems:"center",
-            justifyContent:"space-between",
-            padding:"8px 10px 8px 18px"
-          }}>
+          {/*input box */}
             <input
               type="text"
               value={inputValue}
@@ -214,18 +207,17 @@ const Chat: React.FC<ChatProps> = ({ selectedType, onBack, onClose, onViewDict }
                 flex: 1,
                 fontFamily: 'ABeeZee, Noto Sans KR',
                 fontSize: '14px',
-                color: '#a9a9a9',
+                color: '#000000',
                 outline: 'none',
-                border:"none"
+                border:"none",
+                paddingRight:"10px"
               }}
             />
             <button
               onClick={handleSend}
               style={{
-                position:"absolute",
-                right:"1px",
                 width: '36px',
-                height: '36px',
+                height: '38px',
                 background: "linear-gradient(135deg, #6F7BFF, #9BA5FF, #A4E2CE)",
                 border: 'none',
                 borderRadius: '50%',
@@ -233,21 +225,19 @@ const Chat: React.FC<ChatProps> = ({ selectedType, onBack, onClose, onViewDict }
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#ffffff',
-                fontSize: '20px',
               }}
             >
               <img 
                 src={MessageIcon}
                 alt=""
                 style={{
-                  width:"40px", 
-                  height:"40px", 
-                  objectFit:"contain", 
-                  transform:"translate(4px, -3px)",
+                  width:"36px", 
+                  height:"36px", 
+                  objectFit:"contain",
+                  marginRight:"-7px",
+                  marginTop:"-4px"
                   }}/>
             </button>
-          </div>
         </div>
       </div>
     </div>
