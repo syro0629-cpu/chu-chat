@@ -2,6 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import kiwoomeBot from "../assets/img/kiwoome.png";
 import crossIcon from "../assets/img/cross.png";
+import VeteranHead from "../assets/img/veteran_head.png";
+
+/**
+ * DB에서 mentor 데이터가 들어오면
+ * 이 컴포넌트에서는 mentorType, mentorName, iconSrc 등이 동적으로 반영될 예정
+ * 현재는 피그마 디자인 기반의 고정 틀만 구성
+ */
 
 interface ReminderPopupProps {
   keyword: string;
@@ -9,26 +16,18 @@ interface ReminderPopupProps {
 }
 
 const ReminderPopup: React.FC<ReminderPopupProps> = ({ keyword, onClose }) => {
-  const messages: Record<string, string> = {
-    매도: `매도란?
-매도란 보유하고 있는 주식이나 금융상품을
-시장에 내다 파는 행위를 의미합니다.
-매도를 통해 투자자는 보유 자산을 현금화하거나
-손실을 줄일 수 있습니다.
-키움증권의 영웅문 시스템을 통해 쉽게 매도 주문
-가능하며, 매도 시점과 가격에 따라 투자 수익이
-결정됩니다.
-매도는 투자에서 중요한 거래 행위 중 하나로,
-시장 상황과 투자 전략에 따라 적절한 시점에
-이루어져야 합니다.`,
-  };
-
-  const message = messages[keyword] || `${keyword}에 대한 정보입니다.`;
+  const message = `매도란?\n매도란 보유하고 있는 주식이나 금융상품을 시장에 내다 파는 행위를 의미합니다.\n매도를 통해 투자자는 보유 자산을 현금화하거나 손실을 줄일 수 있습니다.`;
 
   return (
     <Overlay>
       <PopupContainer>
         <WhiteCard>
+          {/* 🧠 캐릭터 아이콘 + 이름 (DB 반영용 틀) */}
+          <MentorInfo>
+            <MentorHeadImg src={VeteranHead} alt="멘토 아이콘" />
+            <MentorName>베테랑 멘토</MentorName>
+          </MentorInfo>
+
           <BackgroundBotImage src={kiwoomeBot} alt="키우미봇 배경" />
 
           <Content>
@@ -64,9 +63,7 @@ const ReminderPopup: React.FC<ReminderPopupProps> = ({ keyword, onClose }) => {
 
 export default ReminderPopup;
 
-/* ============================
-  Styled Components
-============================ */
+/* ============================ Styled Components ============================ */
 
 const Overlay = styled.div`
   position: fixed;
@@ -93,9 +90,33 @@ const WhiteCard = styled.div`
   height: 500px;
   background: #ffffff;
   border-radius: 20px;
-  box-shadow: 0px 20px 50px -10px rgba(0, 0, 0, 0.15);
   overflow: hidden;
   z-index: 10;
+`;
+
+const MentorInfo = styled.div`
+  position: absolute;
+  top: 135px;
+  left: 18px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  z-index: 30;
+`;
+
+const MentorHeadImg = styled.img`
+  width: 25px;
+  height: 25px;
+  object-fit: contain;
+`;
+
+const MentorName = styled.span`
+  font-family: "SF Pro", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #4a4a4a;
+  line-height: 1;
+  margin-top: -0.5px;
 `;
 
 const BackgroundBotImage = styled.img`
@@ -140,8 +161,7 @@ const Header = styled.div`
   justify-content: space-between;
   align-items: flex-start;
   width: 100%;
-  margin-bottom: 12px;
-  flex-shrink: 0;
+  margin-bottom: 40px;
 `;
 
 const HeaderLeft = styled.div`
@@ -157,8 +177,7 @@ const HeaderRight = styled.div`
   flex-direction: column;
   align-items: flex-end;
   gap: 14px;
-  flex-shrink: 0;
-  padding-top: 6px;
+  padding-top: 5px;
 `;
 
 const Title = styled.div`
@@ -197,9 +216,9 @@ const UserBubble = styled.div`
   font-size: 10px;
   padding: 8px 14px;
   font-family: "Nunito", sans-serif;
-  font-weight: 500;
-  text-transform: uppercase;
   white-space: nowrap;
+  margin-top:30px;
+  margin-left:30px;
 `;
 
 const ChatSection = styled.div`
@@ -218,12 +237,9 @@ const MsgBubble = styled.div`
   font-size: 13px;
   color: #000;
   line-height: 1.5;
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05);
-  word-break: keep-all;
 `;
 
 const MessageText = styled.p`
   margin: 0;
   white-space: pre-line;
-  word-break: keep-all;
 `;

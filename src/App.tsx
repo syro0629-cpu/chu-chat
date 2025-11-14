@@ -76,10 +76,10 @@ const App: React.FC = () => {
             onViewDict={() => {setPrevScreen("chat"); setCurrentScreen('dict')}}
           />
         )}
-        {currentScreen === 'dict' && (
-          <Dict 
-          onBack={() => setCurrentScreen(prevScreen)} 
-          onClose={() => setCurrentScreen("home")}
+        {currentScreen === 'dict' && selectedType && (
+          <Dict
+            onBack={() => setCurrentScreen(prevScreen)} 
+            onClose={() => setCurrentScreen("home")}
           />
         )}
       </div>

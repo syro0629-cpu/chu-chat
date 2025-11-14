@@ -5,10 +5,11 @@ import styled from "styled-components";
 const RightWrapper = styled.div`
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 3px;
   position: absolute;
   right: 16px;
-  top: 28px;
+  top: 26px;
 `;
 
 /* 숫자 스타일 */
@@ -17,12 +18,16 @@ const NumberText = styled.span`
   font-size: 13px;
   font-weight: 500;
   color: #6b6b6b;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
 `;
 
 /* 화살표 SVG */
 const Arrow = styled.svg`
   width: 5px;
   height: 9px;
+  flex-shrink: 0;
 `;
 
 export const CardTopRight: React.FC<{ number: string }> = ({ number }) => {

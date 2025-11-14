@@ -24,10 +24,10 @@ const Chat: React.FC<ChatProps> = ({
   onClose, 
   onViewDict }) => {
   const profileImg = selectedType === "beginner" ? ChildHead : VeteranHead;
-  const profileName = selectedType === "beginner" ? "입문자 멘토" : "베테랑 멘토";
+  const profileName = selectedType === "beginner" ? "루키" : "마스터";
   const initialMessage = selectedType === "beginner"
-  ? "안녕하세요! 입문자 멘토입니다.\n 무엇을 알려드릴까요?" 
-  : "안녕하세요! 베테랑 멘토입니다.\n 무엇을 알려드릴까요?";
+  ? "반가워요! 편하게 질문해 주세요.\n\n작은 궁금증도 같이 풀어가면, 어느새 투자 감각이 자라날 거에요\n오늘은 어떤 걸 도와드릴까요?" 
+  : "안녕하세요.\n\n오늘은 어떤 영역을 분석해 드릴까요?\n최신 데이터와 시장 흐름을 기반으로, 바로 활용 가능한 인사이트를 제시하겠습니다.";
   
   useEffect(() => {
     if (messages.length === 0) {
@@ -81,20 +81,25 @@ const Chat: React.FC<ChatProps> = ({
         style={{
           position: 'absolute',
           left: 0,
-          top: '100px',
+          top: '80px',
           width: '402px',
-          height: '694px',
-          overflowY: 'auto',
-          padding: '20px',
-          paddingTop:"100px",
+          height: 'calc(100% - 140px)',
+          overflowY: 'scroll',
+          padding: '0px 20px',
+          paddingTop:"70px",
+          paddingBottom:"10px",
           display: 'flex',
           flexDirection: 'column',
-          gap: '20px',
-          scrollBehavior:"smooth"
+          gap: '12px',
+          scrollBehavior:"smooth",
+          msOverflowStyle:"none",
+          scrollbarWidth:"none",
+          scrollbarColor:"bfbfbf transparent"
+
         }}
       >
         {/*유의사항-스크롤되며 위로 사라짐*/}
-        <div style={{textAlign:"center", marginTop:"-20px", marginBottom:"10px"}}>
+        <div style={{textAlign:"center", marginBottom:"10px"}}>
           <strong style={{
             color: "#666666",
             fontSize:"12px", 
@@ -102,12 +107,32 @@ const Chat: React.FC<ChatProps> = ({
               일취월챗 이용 유의사항
           </strong>
           <div style={{
-            marginTop:"4px", 
+            marginTop:"5px", 
             fontSize: "11px", 
             color:"#666666",
             lineHeight:"15px"}}> 
             일취월챗의 답변은 생성형 AI를 활용한 답변으로 사실과 다를 수 있어요.
           </div> 
+        </div>
+        {/*대화 시작 날짜*/}
+        <div style = {{
+          display:"inline-flex",
+          justifyContent:"center",
+          alignItems:"center",
+          alignSelf:"center",
+          background:"#c6c6c6",
+          padding:"6px 10px",
+          borderRadius:"30px",
+          fontSize:"12px",
+          fontWeight:700,
+          color:"#ffffff",
+          marginBottom:"10px"
+        }}>
+          {new Date().toLocaleDateString("ko-KR", {
+            year: "numeric",
+            month: "2-digit",
+            day:"2-digit"
+          }).replace(/\. /g, '.').replace(/\.$/,'')}
         </div>
 
         {messages.map((message, idx) => (
@@ -146,16 +171,58 @@ const Chat: React.FC<ChatProps> = ({
             }}
           >
               {!message.isUser && (
-                <div
-                  style={{width: '40px', flexShrink: 0,}}/>
-              )}
-              <MessageBubble
-                message={message.text}
-                isUser={message.isUser}
-                style={{maxWidth: '280px',}}
-              />
+                <div style={{width: '40px', flexShrink: 0}} />)}
+              <div style={{display:"flex", flexDirection:"column", gap:"10px"}}>
+                {message.text
+                  .split(/\n\s*\n/)
+                  .map((chunk: string,bIndex:number) => (
+                    <MessageBubble
+                    key={`${message.id}-${bIndex}`}
+                    message={chunk.trim()}
+                    isUser={message.isUser}
+                    style={{maxWidth:"280px"}}/>
+                  ))}
             </div>
           </div>
+          {messages.length === 1 && (
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: "8px",
+                justifyContent: "flex-start",
+                marginLeft:"25px",
+                marginTop: "10px",
+                marginBottom: "10px",
+              }}
+            >
+              {["공매도가 뭐야", "키움증권 현재 주가 어때"].map((text, index) => (
+                <button
+                  key={index}
+                  onClick={() =>
+                    setMessages([
+                      ...messages,
+                      { id: messages.length + 1, text, isUser: true },
+                    ])
+                  }
+                  style={{
+                    background: "#ffffff",
+                    border: "2px solid #cbd3e3",
+                    borderRadius: "30px",
+                    padding: "6px 10px",
+                    fontSize: "12px",
+                    fontWeight: "500",
+                    cursor: "pointer",
+                    color: "#000000",
+                  }}
+                >
+                  {text}
+                </button>
+              ))}
+      </div>
+    )}
+          
+        </div>
         ))}
         <div ref={messagesEndRef} />
       </div>

@@ -30,12 +30,14 @@ const CharacterSelection: React.FC<CharacterSelectionProps> = ({
 
   const characterData = {
     beginner: {
-      title: '입문자 멘토',
-      description: '투자, 아직도 어렵게 느껴지죠?\n같이 차근차근 알아가요!\n제가 바로 당신의 첫 투자 멘토예요 🙌',
+      title: "입문자 멘토",
+      name: '루키',
+      description: "안녕하세요, 입문자 멘토 루키에요!🙌\n투자의 첫 단추를 제대로 끼울 수 있도록 \n옆에서 다정하게 알려드릴게요."
     },
     veteran: {
       title: '베테랑 멘토',
-      description: '투자, 수익률, 어떻게 느끼세요?\n제가 대신 분석해 드릴게요!\n제가 바로 당신의 투자 파트너예요 😊',
+      name:"마스터",
+      description: '안녕하세요, 베테랑 멘토 마스터입니다.😊\n오늘은 어떤 영역을 분석해 드릴까요?\n데이터를 바탕으로 인사이트를 제공합니다.',
     },
   };
 
@@ -74,7 +76,7 @@ const CharacterSelection: React.FC<CharacterSelectionProps> = ({
         onClick={handlePrev}
         style={{
           position: 'absolute',
-          left: '16px',
+          left: '31px',
           top: '380px',
           width: '20px',
           height: '20px',
@@ -93,7 +95,7 @@ const CharacterSelection: React.FC<CharacterSelectionProps> = ({
         onClick={handleNext}
         style={{
           position: 'absolute',
-          right: '26px',
+          right: '35px',
           top: '380px',
           width: '20px',
           height: '20px',
@@ -113,17 +115,33 @@ const CharacterSelection: React.FC<CharacterSelectionProps> = ({
         style={{
           position: 'absolute',
           left: '50%',
-          top: '200px',
+          top: '180px',
           transform: 'translateX(-50%)',
           fontFamily: 'SF Pro',
           fontWeight: '600',
-          fontSize: '30px',
+          fontSize: '28px',
           color: '#606cf2',
           textAlign: 'center',
           whiteSpace:"nowrap"
         }}
       >
         {data.title}
+      </p>
+
+      {/* 이름 */}
+      <p style = {{
+        position:"absolute",
+        left:"50%",
+        top:"230px",
+        transform:"translateX(-50%)",
+        fontFamily:"SF pro",
+        fontWeight:"500",
+        fontSize:"25px",
+        color:"#000000",
+        textAlign:"center",
+        whiteSpace:"nowrap"
+      }}>
+        {data.name}
       </p>
 
       {/* 설명 */}

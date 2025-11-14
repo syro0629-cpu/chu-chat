@@ -176,7 +176,7 @@ const ContentBorder = styled.div`
 
 const CloseButton = styled.button`
   position: absolute;
-  top: 10px;
+  top: 3px;
   right: 10px;
   background: none;
   border: none;
@@ -223,7 +223,7 @@ const Space = styled.span`
 const Subtitle = styled.p`
   font-family: "Gabarito", "Noto Sans KR";
   font-size: 16px;
-  margin: 0;
+  margin-top: -6px;
 `;
 
 const Grid = styled.div`
